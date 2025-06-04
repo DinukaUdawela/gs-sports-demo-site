@@ -1,0 +1,98 @@
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
+
+const FeaturedProducts = () => {
+  const products = [
+    {
+      id: 1,
+      name: "Professional Basketball",
+      category: "Basketball",
+      price: 89.99,
+      stock: 15,
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop",
+      description: "Official size basketball perfect for training and games"
+    },
+    {
+      id: 2,
+      name: "Tennis Racket Pro",
+      category: "Tennis",
+      price: 159.99,
+      stock: 8,
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop",
+      description: "Lightweight carbon fiber tennis racket for professionals"
+    },
+    {
+      id: 3,
+      name: "Football Cleats Elite",
+      category: "Football",
+      price: 199.99,
+      stock: 12,
+      image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=300&fit=crop",
+      description: "High-performance cleats for optimal field performance"
+    }
+  ];
+
+  return (
+    <section className="py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            Featured Products
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Discover our hand-picked selection of premium sporting goods designed to elevate your game
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {products.map((product) => (
+            <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+              <CardHeader className="p-0">
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <Badge className="absolute top-3 right-3 bg-green-600">
+                    {product.stock} in stock
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <Badge variant="outline" className="mb-2 text-blue-600 border-blue-600">
+                  {product.category}
+                </Badge>
+                <CardTitle className="text-xl mb-2">{product.name}</CardTitle>
+                <CardDescription className="text-gray-600 mb-4">
+                  {product.description}
+                </CardDescription>
+                <div className="text-2xl font-bold text-green-600">
+                  ${product.price}
+                </div>
+              </CardContent>
+              <CardFooter className="p-6 pt-0">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                  Contact to Order
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link to="/products">
+            <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+              View All Products
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProducts;

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,10 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navigation from "@/components/Navigation";
 import { Search, ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
   const products = [
     {
@@ -77,6 +80,21 @@ const Products = () => {
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleAddToCart = (product: typeof products[0]) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+    });
+    
+    toast({
+      title: "Added to cart!",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
@@ -146,9 +164,12 @@ const Products = () => {
                 </div>
               </CardContent>
               <CardFooter className="p-6 pt-0">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
+                <Button 
+                  className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                  onClick={() => handleAddToCart(product)}
+                >
                   <ShoppingCart className="mr-2" size={16} />
-                  Contact to Order
+                  Add to Cart
                 </Button>
               </CardFooter>
             </Card>

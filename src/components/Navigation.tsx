@@ -3,10 +3,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingCart, Users, Home, Contact } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "@/contexts/CartContext";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { getTotalItems } = useCart();
 
   const navItems = [
     { name: "Home", path: "/", icon: Home },
@@ -50,10 +53,40 @@ const Navigation = () => {
                 </Link>
               );
             })}
+            
+            {/* Cart Icon */}
+            <Link
+              to="/cart"
+              className={`relative flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive("/cart")
+                  ? "text-blue-600 bg-blue-50"
+                  : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              }`}
+            >
+              <ShoppingCart size={16} />
+              <span>Cart</span>
+              {getTotalItems() > 0 && (
+                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-5 h-5 flex items-center justify-center">
+                  {getTotalItems()}
+                </Badge>
+              )}
+            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Mobile Cart Icon */}
+            <Link to="/cart" className="relative">
+              <Button variant="ghost" size="sm">
+                <ShoppingCart size={20} />
+                {getTotalItems() > 0 && (
+                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-5 h-5 flex items-center justify-center">
+                    {getTotalItems()}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
+            
             <Button
               variant="ghost"
               size="sm"

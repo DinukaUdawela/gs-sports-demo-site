@@ -1,10 +1,15 @@
-
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const FeaturedProducts = () => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
   const products = [
     {
       id: 1,
@@ -34,6 +39,21 @@ const FeaturedProducts = () => {
       description: "High-performance cleats for optimal field performance"
     }
   ];
+
+  const handleAddToCart = (product: typeof products[0]) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+    });
+    
+    toast({
+      title: "Added to cart!",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
 
   return (
     <section className="py-16 px-4">
@@ -75,8 +95,12 @@ const FeaturedProducts = () => {
                 </div>
               </CardContent>
               <CardFooter className="p-6 pt-0">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700">
-                  Contact to Order
+                <Button 
+                  className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  <ShoppingCart className="mr-2" size={16} />
+                  Add to Cart
                 </Button>
               </CardFooter>
             </Card>
